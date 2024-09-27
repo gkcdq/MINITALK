@@ -8,7 +8,7 @@ void	bit_signal(int bit)
 		ft_printf("Signal SIGUSR2:\n");
 }
 
-int main(int ac, char **av)
+int main(void)
 {
 	int	pid;
 
