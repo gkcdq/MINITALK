@@ -1,4 +1,4 @@
-SRCS		= server.c client.c
+SRCS		= client.c
 OBJS		= $(SRCS:.c=.o)
 SERVER		= server
 CLIENT		= client
