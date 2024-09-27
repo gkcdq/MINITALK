@@ -3,9 +3,9 @@
 void	bit_signal(int bit)
 {
 	if (bit == SIG_BIT_0)
-		ft_printf("Signal SIGUSR1\n");
+		ft_printf("Signal SIGUSR1:\n");
 	else if (bit == SIG_BIT_1)
-		ft_printf("Signal SIGUSR2\n");
+		ft_printf("Signal SIGUSR2:\n");
 }
 
 int main(int ac, char **av)
