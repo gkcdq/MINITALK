@@ -1,11 +1,11 @@
-SRCS		= server.c lient.c
+SRCS		= server.c client.c
 OBJS		= $(SRCS:.c=.o)
 SERVER		= server
 CLIENT		= client
 CC		= gcc -g
 RM		= rm -f
 CFLAGS		= -Wall -Wextra -Werror
-LDFLAGS 	= -Llibft
+LDFLAGS 	= -Llibft -lft
 INCLUDES	= -Ilibft
 
 all: $(SERVER) $(CLIENT)
