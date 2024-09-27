@@ -11,4 +11,9 @@
 
 /* mes fonctions */
 
+// server.c
+void	bit_signal(int bit);
+
+// client.c
+
 #endif
