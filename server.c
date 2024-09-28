@@ -13,7 +13,7 @@ int main(void)
 	int	pid;
 
 	pid = getpid();
-	ft_printf("PID : %d\n", pid);
+	ft_printf("\n	PID : %d\n", pid);
 	signal(SIG_BIT_0, bit_signal);
 	signal(SIG_BIT_1, bit_signal);
 	while(1)
