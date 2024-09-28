@@ -35,7 +35,7 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 	{
-		ft_printf("\n\tUsage : ./client <PID> <message>\n\n");
+		ft_printf("\n\tUsage : ./client PID <message>\n\n");
 		return (0);
 	}
 	pid = ft_atoi(av[1]);
