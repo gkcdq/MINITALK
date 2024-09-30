@@ -6,32 +6,32 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:49:02 by tmilin            #+#    #+#             */
-/*   Updated: 2024/09/29 14:46:30 by tmilin           ###   ########.fr       */
+/*   Updated: 2024/09/30 14:50:20 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_char(int pid, char c)
+void	send_char(pid_t pid, char c)
 {
 	int	bit;
 
-	bit = 7;
-	while (bit >= 0)
+	bit = 0;
+	while (bit < 8)
 	{
-		if ((c >> bit) & 1)
-			kill(pid, SIGUSR2);
-		else
+		if ((c & (0x01 << bit)) != 0)
 			kill(pid, SIGUSR1);
-		usleep(500);
-		bit--;
+		else
+			kill(pid, SIGUSR2);
+		usleep(600);
+		bit++;
 	}
 }
 
 int	main(int ac, char **av)
 {
 	int				i;
-	int				pid;
+	pid_t			pid;
 	char			*message;
 
 	if (ac != 3)
@@ -40,8 +40,6 @@ int	main(int ac, char **av)
 		return (0);
 	}
 	pid = ft_atoi(av[1]);
-	if (pid != ft_atoi(av[1]))
-		return (0);
 	message = av[2];
 	i = 0;
 	while (message[i])
@@ -49,5 +47,6 @@ int	main(int ac, char **av)
 		send_char(pid, message[i]);
 		i++;
 	}
+	send_char(pid, '\n');
 	return (0);
 }
