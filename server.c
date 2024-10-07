@@ -85,6 +85,7 @@ int	main(int ac, char **av)
 	ft_printf("\n	PID : %d\n\n", pid);
 	signal(SIGUSR1, bit_signal);
 	signal(SIGUSR2, bit_signal);
+	signal(SIGINT, free_buffer);
 	while (1)
 	{
 		pause();
