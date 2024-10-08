@@ -2,8 +2,8 @@ SRCS		= server.c client.c
 OBJS		= $(SRCS:.c=.o)
 SERVER		= server
 CLIENT		= client
-CC		= gcc -g
-RM		= rm -f
+CC			= cc -g
+RM			= rm -f
 CFLAGS		= -Wall -Wextra -Werror
 LDFLAGS 	= -Llibft -lft
 INCLUDES	= -Ilibft

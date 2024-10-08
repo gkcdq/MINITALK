@@ -6,11 +6,36 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:49:28 by tmilin            #+#    #+#             */
-/*   Updated: 2024/09/29 15:10:22 by tmilin           ###   ########.fr       */
+/*   Updated: 2024/10/08 12:42:21 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+static char	g_buffer[BUFFER_SIZE + 1];
+
+void	buffer_s(void)
+{
+	ft_printf("\n%s", g_buffer);
+	g_buffer[0] = '\0';
+}
+
+void	fill_buffer(char c)
+{
+	static int	buffer_index = 0;
+
+	if (buffer_index < BUFFER_SIZE - 1)
+	{
+		g_buffer[buffer_index] = c;
+		buffer_index++;
+		g_buffer[buffer_index] = '\0';
+	}
+	if (buffer_index >= BUFFER_SIZE - 1)
+	{
+		buffer_s();
+		buffer_index = 0;
+	}
+}
 
 void	bit_signal(int bit)
 {
@@ -24,7 +49,14 @@ void	bit_signal(int bit)
 	count_bit++;
 	if (count_bit == 8)
 	{
-		ft_printf("%c", c);
+		if (c == '\0')
+		{
+			buffer_s();
+		}
+		else
+		{
+			fill_buffer(c);
+		}
 		count_bit = 0;
 		c = 0;
 	}
