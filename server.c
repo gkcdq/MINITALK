@@ -6,68 +6,59 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:49:28 by tmilin            #+#    #+#             */
-/*   Updated: 2024/09/30 19:53:44 by tmilin           ###   ########.fr       */
+/*   Updated: 2024/10/08 12:42:21 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static char	*buffer = NULL;
+static char	g_buffer[BUFFER_SIZE + 1];
 
-void	free_buffer(char *buffer)
+void	buffer_s(void)
 {
-	if (buffer)
-		free(buffer);
+	ft_printf("\n%s", g_buffer);
+	g_buffer[0] = '\0';
 }
 
+void	fill_buffer(char c)
+{
+	static int	buffer_index = 0;
 
+	if (buffer_index < BUFFER_SIZE - 1)
+	{
+		g_buffer[buffer_index] = c;
+		buffer_index++;
+		g_buffer[buffer_index] = '\0';
+	}
+	if (buffer_index >= BUFFER_SIZE - 1)
+	{
+		buffer_s();
+		buffer_index = 0;
+	}
+}
 
 void	bit_signal(int bit)
 {
-	static int	count_bit;
-	static int	c;
-	static int	i = 0;
-	static int	j = 0;
-	static int	buffer_size = 2;
-	char		*new_buffer;
+	static int	count_bit = 0;
+	static char	c = 0;
 
-	if (!buffer)
-		buffer = malloc(sizeof(char) * buffer_size + 1);
 	if (bit == SIGUSR1)
-		c |= (0x01 << count_bit);
+		c = c << 1;
+	else if (bit == SIGUSR2)
+		c = (c << 1) | 1;
 	count_bit++;
 	if (count_bit == 8)
 	{
 		if (c == '\0')
 		{
-			ft_printf("\0");
-			ft_printf("%s", buffer);
-			free_buffer(buffer);
-			exit(0);
+			buffer_s();
 		}
-		buffer[i] = c;
+		else
+		{
+			fill_buffer(c);
+		}
 		count_bit = 0;
 		c = 0;
-		i++;
-		j++;
-		if (i >= buffer_size)
-		{
-			buffer_size *= 2;
-			new_buffer = realloc(buffer, sizeof(char) * buffer_size + 1);
-			if (!new_buffer)
-			{
-				free_buffer(buffer);
-				exit(1);
-			}
-			buffer = new_buffer;
-		}
-	}
-	if (j == 2)
-	{
-		buffer[i] = '\0';
-		ft_printf("%s", buffer);
-		j = 0;
-		i = 0;
 	}
 }
 
@@ -85,69 +76,9 @@ int	main(int ac, char **av)
 	ft_printf("\n	PID : %d\n\n", pid);
 	signal(SIGUSR1, bit_signal);
 	signal(SIGUSR2, bit_signal);
-	signal(SIGINT, free_buffer);
 	while (1)
 	{
 		pause();
 	}
-	free_buffer(buffer);
 	return (0);
 }
-
-
-
-/*if (j > 2 && c == '\0')
-		{
-			buffer[i] = '\0';
-			ft_printf("%s", buffer);
-			free_buffer(buffer);
-			return ;
-		}*/
-
-/*void	bit_signal(int bit)
-{
-	static int	count_bit;
-	static int	c;
-	static int	i = 0;
-	static int	j = 0;
-	static int	buffer_size = 2;
-
-	if (!buffer)
-		buffer = malloc(sizeof(char) * buffer_size + 1);
-	if (bit == SIGUSR1)
-		c |= (0x01 << count_bit);
-	count_bit++;
-	if (count_bit == 8)
-	{
-		if (j != 100 && c == '\0')
-		{
-			ft_printf("%s", buffer);
-		}
-		if (c == '\0')
-		{
-			ft_printf("\0");
-			free_buffer(buffer);
-			return ;
-		}
-		buffer[i] = c;
-		//ft_printf("%c", buffer[i]);
-		count_bit = 0;
-		c = 0;
-		i++;
-		j++;
-	//	ft_printf("%d\n", j);
-	}
-	if (j == 2)
-	{
-		buffer[i] = '\0';
-		ft_printf("%s", buffer);
-		char *new_buffer = realloc(buffer, sizeof(char) * buffer_size + 1);
-		if (!buffer)
-		{
-			free(buffer);
-			exit(0) ;
-		}
-		buffer = new_buffer;
-		j = 0;
-	}
-}*/
