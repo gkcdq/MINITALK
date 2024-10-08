@@ -59,3 +59,47 @@ int	main(int argc, char **argv)
 	send_message(pid, argv[2]);
 	return (0);
 }
+
+//CODE DU PREMIER PUSH (SANS BUFFER).
+
+/*#include "minitalk.h"
+
+void    send_char(int pid, char c)
+{
+    int    bit;
+
+    bit = 7;
+    while (bit >= 0)
+    {
+        if ((c >> bit) & 1)
+            kill(pid, SIGUSR2);
+        else
+            kill(pid, SIGUSR1);
+        usleep(500);
+        bit--;
+    }
+}
+
+int    main(int ac, char **av)
+{
+    int                i;
+    int                pid;
+    char            *message;
+
+    if (ac != 3)
+    {
+        ft_printf("\n\tUsage : ./client PID ""message""\n\n");
+        return (0);
+    }
+    pid = ft_atoi(av[1]);
+    if (pid != ft_atoi(av[1]))
+        return (0);
+    message = av[2];
+    i = 0;
+    while (message[i])
+    {
+        send_char(pid, message[i]);
+        i++;
+    }
+    return (0);
+}*/
