@@ -6,14 +6,14 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:42:07 by tmilin            #+#    #+#             */
-/*   Updated: 2024/10/08 12:33:33 by tmilin           ###   ########.fr       */
+/*   Updated: 2024/10/11 13:36:24 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 200000
+#  define BUFFER_SIZE 2000000000
 # endif
 
 # include <limits.h>

@@ -6,100 +6,91 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 13:49:02 by tmilin            #+#    #+#             */
-/*   Updated: 2024/10/08 11:46:25 by tmilin           ###   ########.fr       */
+/*   Updated: 2024/10/11 14:57:44 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_bit(int pid, char bit)
-{
-	if (bit == '0')
-		kill(pid, SIGUSR1);
-	else
-		kill(pid, SIGUSR2);
-}
-
-void	send_bits(int pid, char c)
+static void	send_bits(pid_t pid, char s)
 {
 	int	i;
 
 	i = 0;
 	while (i < 8)
 	{
-		if ((c >> (7 - i)) & 1)
-			send_bit(pid, '1');
+		if ((s & (0x01 << i)) != 0)
+			kill(pid, SIGUSR1);
 		else
-			send_bit(pid, '0');
+			kill(pid, SIGUSR2);
 		usleep(500);
 		i++;
 	}
 }
 
-void	send_message(int pid, const char *message)
-{
-	while (*message)
-	{
-		send_bits(pid, *message);
-		message++;
-	}
-	send_bits(pid, 0);
-}
-
 int	main(int argc, char **argv)
 {
-	int	pid;
+	pid_t	pid;
+	char	*message;
+	int		i;
 
 	if (argc != 3)
 	{
-		ft_printf("\n\tUsage: %s <PID> <message>\n\n", argv[0]);
-		return (1);
+		ft_printf("Wrong number of argument\n");
+		return (0);
 	}
+	i = 0;
 	pid = ft_atoi(argv[1]);
-	send_message(pid, argv[2]);
+	message = argv[2];
+	while (message[i] != '\0')
+	{
+		send_bits(pid, message[i]);
+		i++;
+	}
+	send_bits(pid, '\n');
 	return (0);
 }
 
-//CODE DU PREMIER PUSH (SANS BUFFER).
+// CODE DU PREMIER PUSH.
 
 /*#include "minitalk.h"
 
-void    send_char(int pid, char c)
+void	send_char(int pid, char c)
 {
-    int    bit;
+	int	bit;
 
-    bit = 7;
-    while (bit >= 0)
-    {
-        if ((c >> bit) & 1)
-            kill(pid, SIGUSR2);
-        else
-            kill(pid, SIGUSR1);
-        usleep(500);
-        bit--;
-    }
+	bit = 7;
+	while (bit >= 0)
+	{
+		if ((c >> bit) & 1)
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
+		usleep(500);
+		bit--;
+	}
 }
 
-int    main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    int                i;
-    int                pid;
-    char            *message;
+	int                i;
+	int                pid;
+	char            *message;
 
-    if (ac != 3)
-    {
-        ft_printf("\n\tUsage : ./client PID ""message""\n\n");
-        return (0);
-    }
-    pid = ft_atoi(av[1]);
-    if (pid != ft_atoi(av[1]))
-        return (0);
-    message = av[2];
-    i = 0;
-    while (message[i])
-    {
-        send_char(pid, message[i]);
-        i++;
-    }
-    return (0);
+	if (ac != 3)
+	{
+		ft_printf("\n\tUsage : ./client PID ""message""\n\n");
+		return (0);
+	}
+	pid = ft_atoi(av[1]);
+	if (pid != ft_atoi(av[1]))
+		return (0);
+	message = av[2];
+	i = 0;
+	while (message[i])
+	{
+		send_char(pid, message[i]);
+		i++;
+	}
+	return (0);
 }*/
